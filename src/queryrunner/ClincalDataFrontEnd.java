@@ -79,7 +79,7 @@ public class ClincalDataFrontEnd extends JFrame {
 		contentPane.add(panelWelcome);
 		lbImageHomePage = new JLabel("");
 		lbImageHomePage.setIcon(new ImageIcon(ClincalDataFrontEnd.class.getResource(
-										"/image/homepage_7by6v2.png")));
+										"/image/homepage_cdp_small.png")));
 		panelWelcome.add(lbImageHomePage);
 		panelLogin = new JPanel();
 		panelLogin.setBounds(0, 0, 321, 693);

@@ -209,7 +209,7 @@ public class QueryJDBC {
 		url += database;
 		url += "?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 		try {
-			Class.forName(DB_DRV).newInstance();
+			Class.forName(DB_DRV);
 			connection = DriverManager.getConnection(url, user, pass);
 
 		} catch (SQLException ex) {
