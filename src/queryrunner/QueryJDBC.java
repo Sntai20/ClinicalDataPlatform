@@ -4,6 +4,7 @@
  * This is free and unencumbered software released into the public domain.
  */
 package queryrunner;
+
 import java.sql.Connection;
 import java.sql.*;
 import java.sql.DriverManager;
@@ -21,25 +22,25 @@ public class QueryJDBC {
 
 	/** The connection. */
 	public Connection connection = null;
-	
+
 	/** The database drive. */
 	static final String DB_DRV = "com.mysql.cj.jdbc.Driver";
-	
+
 	/** The connection error. */
 	String conError = "";
-	
+
 	/** The url. */
 	String url;
-	
+
 	/** The user name. */
 	String userName;
-	
+
 	/** The headers. */
 	String[] headers;
-	
+
 	/** The all rows. */
 	String[][] allRows;
-	
+
 	/** The update amount. */
 	int updateAmount = 0;
 
@@ -89,8 +90,8 @@ public class QueryJDBC {
 	/**
 	 * Execute query.
 	 *
-	 * @param szQuery the query
-	 * @param parms the parameters
+	 * @param szQuery   the query
+	 * @param parms     the parameters
 	 * @param likeparms the parameters using like
 	 * @return true, if successful
 	 */
@@ -162,13 +163,13 @@ public class QueryJDBC {
 	 * Execute update.
 	 *
 	 * @param szQuery the query
-	 * @param parms the parameters
+	 * @param parms   the parameters
 	 * @return true, if successful
 	 */
 	public boolean ExecuteUpdate(String szQuery, String[] parms) {
 		PreparedStatement preparedStatement = null;
 		updateAmount = 0;
-		//Get the columns and the amount of columns
+		// Get the columns and the amount of columns
 		try {
 			preparedStatement = this.connection.prepareStatement(szQuery);
 			int nParamAmount = parms.length;
@@ -178,8 +179,7 @@ public class QueryJDBC {
 			}
 			updateAmount = preparedStatement.executeUpdate();
 			preparedStatement.close();
-		}
-		catch (SQLException ex) {
+		} catch (SQLException ex) {
 			this.conError = "SQLException: " + ex.getMessage();
 			this.conError += "SQLState: " + ex.getSQLState();
 			this.conError += "VendorError: " + ex.getErrorCode();
@@ -195,9 +195,9 @@ public class QueryJDBC {
 	/**
 	 * Connect to database.
 	 *
-	 * @param host the host
-	 * @param user the user
-	 * @param pass the pass
+	 * @param host     the host
+	 * @param user     the user
+	 * @param pass     the pass
 	 * @param database the database
 	 * @return true, if successful
 	 */

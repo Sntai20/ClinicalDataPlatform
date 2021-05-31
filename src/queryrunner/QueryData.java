@@ -4,28 +4,26 @@
  * This is free and unencumbered software released into the public domain.
  */
 package queryrunner;
+
 import java.util.ArrayList;
 
 /**
- * The Class QueryData creates query objects 
- * with the associated parameters.
+ * The Class QueryData creates query objects with the associated parameters.
  *
  * @author mckeem, carrie
  */
 public class QueryData {
-	
-	
+
 	/**
 	 * Instantiates a new query data.
 	 *
-	 * @param query the query
-	 * @param parms the parameters
+	 * @param query     the query
+	 * @param parms     the parameters
 	 * @param likeparms the parameters using like
-	 * @param isAction the is action
-	 * @param isParm the is parameters
+	 * @param isAction  the is action
+	 * @param isParm    the is parameters
 	 */
-	QueryData(String query, String[] parms, boolean[] likeparms, boolean isAction, boolean isParm)
-	{
+	QueryData(String query, String[] parms, boolean[] likeparms, boolean isAction, boolean isParm) {
 		this.queryString = query;
 		this.arrayParms = parms;
 		this.arrayLikeParms = likeparms;
@@ -82,7 +80,6 @@ public class QueryData {
 		return arrayLikeParms;
 	}
 
-
 	/**
 	 * Checks if is query parameter.
 	 *
@@ -94,13 +91,13 @@ public class QueryData {
 
 	/** The query string. */
 	private String queryString;
-	
+
 	/** The array of all parameters. */
 	private String[] arrayParms;
-	
+
 	/** Does it have parameters */
 	private boolean isParms;
-	
+
 	/** The array contains like parameters */
 	private boolean[] arrayLikeParms;
 }
