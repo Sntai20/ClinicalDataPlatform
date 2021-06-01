@@ -13,18 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import javax.swing.DefaultListModel;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -59,7 +48,7 @@ public class ClincalDataFrontEnd extends JFrame {
 	 */
 	private void initContentPane() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1118, 723);
+		setBounds(100, 100, 1118, 721);
 		contentPane = new JPanel();
 		contentPane.setBackground(paleGreenMU);
 		contentPane.setOpaque(true);
@@ -106,18 +95,17 @@ public class ClincalDataFrontEnd extends JFrame {
 		panelLogin.add(lblPassword);
 
 		// Project Status Report Button
-		btnCheckProjects = new JButton("Project Status");
-		btnCheckSkills = new JButton("Skill Assessment");
+		btnCheckProjects = new JButton("Equipment Status");
+		btnPriorityWorkflows = new JButton("Priority Workflows");
 		btnAbout = new JButton("About");
-		btnNavigation = new JButton[] { btnCheckProjects, btnCheckSkills, btnAbout };
+		btnNavigation = new JButton[] { btnCheckProjects, btnPriorityWorkflows, btnAbout };
 
-		Icon iconProject = IconFontSwing.buildIcon(FontAwesome.CALENDAR_CHECK_O, 15, Color.WHITE);
+		Icon iconProject = IconFontSwing.buildIcon(FontAwesome.CALENDAR_CHECK_O, 15, Color.BLACK);
 		btnCheckProjects.setIcon(iconProject);
 		btnCheckProjects.setVisible(false);
 		btnCheckProjects.setFont(new Font("Lucida Grande", Font.BOLD, 14));
 		btnCheckProjects.setBackground(greyMU);
-		btnCheckProjects.setForeground(whiteMU);
-		btnCheckProjects.setOpaque(true);
+		btnCheckProjects.setOpaque(false);
 		btnCheckProjects.setBorderPainted(true);
 		btnCheckProjects.setBounds(56, 384, 200, 50);
 		panelLogin.add(btnCheckProjects);
@@ -129,30 +117,28 @@ public class ClincalDataFrontEnd extends JFrame {
 		});
 
 		// Skill Assessment Report Button
-		Icon iconWrench = IconFontSwing.buildIcon(FontAwesome.WRENCH, 15, Color.WHITE);
-		btnCheckSkills.setIcon(iconWrench);
-		btnCheckSkills.setVisible(false);
-		btnCheckSkills.setFont(new Font("Lucida Grande", Font.BOLD, 14));
-		btnCheckSkills.setBackground(greyMU);
-		btnCheckSkills.setForeground(whiteMU);
-		btnCheckSkills.setOpaque(true);
-		btnCheckSkills.setBorderPainted(true);
-		btnCheckSkills.setBounds(56, 322, 200, 50);
-		panelLogin.add(btnCheckSkills);
-		btnCheckSkills.addActionListener(new ActionListener() {
+		Icon iconWrench = IconFontSwing.buildIcon(FontAwesome.WRENCH, 15, Color.BLACK);
+		btnPriorityWorkflows.setIcon(iconWrench);
+		btnPriorityWorkflows.setVisible(false);
+		btnPriorityWorkflows.setFont(new Font("Lucida Grande", Font.BOLD, 14));
+		btnPriorityWorkflows.setBackground(greyMU);
+		btnPriorityWorkflows.setOpaque(true);
+		btnPriorityWorkflows.setBorderPainted(true);
+		btnPriorityWorkflows.setBounds(56, 322, 200, 50);
+		panelLogin.add(btnPriorityWorkflows);
+		btnPriorityWorkflows.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				showPanelSkills(evt);
-				changeBackgroundColorClick(btnCheckSkills);
+				changeBackgroundColorClick(btnPriorityWorkflows);
 			}
 		});
 
 		// About Button
-		Icon iconAbout = IconFontSwing.buildIcon(FontAwesome.WRENCH, 15, Color.WHITE);
+		Icon iconAbout = IconFontSwing.buildIcon(FontAwesome.WRENCH, 15, Color.BLACK);
 		btnAbout.setIcon(iconAbout);
 		btnAbout.setVisible(false);
 		btnAbout.setFont(new Font("Lucida Grande", Font.BOLD, 14));
 		btnAbout.setBackground(greyMU);
-		btnAbout.setForeground(whiteMU);
 		btnAbout.setOpaque(true);
 		btnAbout.setBorderPainted(true);
 		btnAbout.setBounds(56, 446, 200, 50);
@@ -240,7 +226,7 @@ public class ClincalDataFrontEnd extends JFrame {
 	 * 
 	 */
 	private void initSkillsPanel() {
-		JLabel lblSkillsAssesment = new JLabel("Skills Assesment Report");
+		JLabel lblSkillsAssesment = new JLabel("Priority Business Workflows");
 		lblSkillsAssesment.setForeground(UIManager.getColor("ComboBox.foreground"));
 		lblSkillsAssesment.setFont(new Font("NanumSquareRound Bold", Font.BOLD, 22));
 		lblSkillsAssesment.setBounds(42, 12, 422, 37);
@@ -270,8 +256,10 @@ public class ClincalDataFrontEnd extends JFrame {
 		panelTitleAndParams.setLayout(null);
 
 		panelTitleAndParams.add(textFieldEntry1);
-		textFieldEntry1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
+		textFieldEntry1.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent event)
+			{
 				expertSkillsQueryActionPerformed(event);
 				System.out.println("The entered text is: " + textFieldEntry1.getText());
 			}
@@ -285,7 +273,8 @@ public class ClincalDataFrontEnd extends JFrame {
 		lblEmployeeName.setBounds(0, 41, 614, 41);
 		panelTitleAndParams.add(lblEmployeeName);
 
-		addTop5Skills();
+		addEquipmentInventoryWorkflow();
+		addClinicalTests();
 		addExpertSkills();
 
 	}
@@ -295,16 +284,18 @@ public class ClincalDataFrontEnd extends JFrame {
 	 * 
 	 */
 	private void addExpertSkills() {
-		btnExpertSkills = new JButton("Experts");
+		btnExpertSkills = new JButton("Technicians");
 		btnExpertSkills.setForeground(whiteMU);
 		btnExpertSkills.setBackground(greenMU);
 		btnExpertSkills.setOpaque(true); // Fix for macs
 		btnExpertSkills.setBorderPainted(false); // Fix for macs
-		btnExpertSkills.setBounds(36, 61, 114, 40);
-		String title = "Experts: Employees with Over One Year of Experience by Skill Set";
+		btnExpertSkills.setBounds(36, 61, 180, 40);
+		String title = "Lab Technicians";
 		// Returns to default view
-		btnExpertSkills.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
+		btnExpertSkills.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent event)
+			{
 				executeSkillQuery(0, parameters);
 				// on click change title
 				lblSkillsQueryTitle.setText(title);
@@ -318,14 +309,16 @@ public class ClincalDataFrontEnd extends JFrame {
 
 	/**
 	 * This function adds the top 5 skills query and button to the application.
-	 * 
+	 *
 	 */
-	private void addTop5Skills() {
-		btnTop5Skills = new JButton("Top 5 Skills");
-		String title = "Top 5 Skills: The Most Common Skillsets Shared Among Employees";
-		btnTop5Skills.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				executeSkillQuery(3, parameters);
+	private void addClinicalTests() {
+		btnTop5Skills = new JButton("Clinical Tests");
+		String title = "Technicians Qualified To Preform Clinical Test";
+		btnTop5Skills.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				executeSkillQuery(1, parameters);
 				// on click change title
 				lblSkillsQueryTitle.setText(title);
 				lblEmployeeName.setVisible(false);
@@ -336,9 +329,36 @@ public class ClincalDataFrontEnd extends JFrame {
 		btnTop5Skills.setBackground(greenMU);
 		btnTop5Skills.setOpaque(true); // Fix for macs
 		btnTop5Skills.setBorderPainted(false); // Fix for macs
-		btnTop5Skills.setBounds(186, 61, 114, 40);
+		btnTop5Skills.setBounds(236, 61, 180, 40);
 		panelSkills.add(btnTop5Skills);
 		btnTop5Skills.setEnabled(false);
+	}
+
+	/**
+	 * This function adds the supply inventory query and button to the application.
+	 * 
+	 */
+	private void addEquipmentInventoryWorkflow()
+	{
+		btnEquipmentInventory = new JButton("Supply Inventory");
+		String title = "Clinical Material Supply Management";
+		btnEquipmentInventory.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				executeInventoryQuery(2, parameters); // on click change title
+				lblSkillsQueryTitle.setText(title);
+				lblEmployeeName.setVisible(false);
+				textFieldEntry1.setVisible(false);
+			}
+		});
+		btnEquipmentInventory.setForeground(whiteMU);
+		btnEquipmentInventory.setBackground(greenMU);
+		btnEquipmentInventory.setOpaque(true); // Fix for macs
+		btnEquipmentInventory.setBorderPainted(false); // Fix for macs
+		btnEquipmentInventory.setBounds(436, 61, 180, 40);
+		panelSkills.add(btnEquipmentInventory);
+		btnEquipmentInventory.setEnabled(false);
 	}
 
 	/**
@@ -396,6 +416,27 @@ public class ClincalDataFrontEnd extends JFrame {
 	}
 
 	/**
+	 * Takes in a query number and a parameter string to populate the Skills Table
+	 * with the appropriate query
+	 *
+	 * @param m_queryChoice
+	 * @param parameters
+	 */
+	private void executeInventoryQuery(int m_queryChoice, String[] parameters) {
+		boolean bOK = true;
+		String[] headers;
+		String[][] allData;
+		bOK = queryrunner.ExecuteQuery(m_queryChoice, parameters);
+		if (bOK == true) {
+			headers = queryrunner.GetQueryHeaders();
+			allData = queryrunner.GetQueryData();
+			updateSkillsTableView(headers, allData);
+		} else {
+			System.out.println("Not executable.");
+		}
+	}
+
+	/**
 	 * Updates the Skills Table with the headers and data
 	 * 
 	 * @param headers column header
@@ -435,7 +476,7 @@ public class ClincalDataFrontEnd extends JFrame {
 		panelTableTasks.setBounds(22, 204, 760, 449);
 		panelTableTasks.setLayout(null);
 
-		JLabel lblProjectStatus = new JLabel("Project Status Report");
+		JLabel lblProjectStatus = new JLabel("Equipment Status Report");
 		lblProjectStatus.setForeground(UIManager.getColor("ComboBox.foreground"));
 		lblProjectStatus.setFont(new Font("NanumSquareRound Bold", Font.BOLD, 22));
 		lblProjectStatus.setBounds(29, 12, 422, 37);
@@ -687,8 +728,8 @@ public class ClincalDataFrontEnd extends JFrame {
 	 */
 	private void initWelcomeLogo() {
 		lbLogo = new JLabel("");
-		lbLogo.setIcon(new ImageIcon(ClincalDataFrontEnd.class.getResource("/image/logodark_small.png")));
-		lbLogo.setBounds(24, 12, 280, 107);
+		lbLogo.setIcon(new ImageIcon(ClincalDataFrontEnd.class.getResource("/image/logo_cdp_w_small.png")));
+		lbLogo.setBounds(24, 32, 280, 107);
 	}
 
 	/**
@@ -697,7 +738,7 @@ public class ClincalDataFrontEnd extends JFrame {
 	 */
 	private void initUserNameAndPassword() {
 		btnDBConnect = new JButton("Connect");
-		btnDBConnect.setBounds(24, 164, 143, 35);
+		btnDBConnect.setBounds(24, 184, 143, 35);
 		panelLogin.add(btnDBConnect);
 		btnDBConnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -720,8 +761,32 @@ public class ClincalDataFrontEnd extends JFrame {
 		panelAbout.setBackground(greyMU);
 		panelAbout.setBounds(319, 0, 800, 693);
 		contentPane.add(panelAbout);
-		lbImageAbout = new JLabel("");
-		lbImageAbout.setIcon(new ImageIcon(ClincalDataFrontEnd.class.getResource("/image/about.png")));
+		lbImageAbout = new JLabel();
+		lbImageAbout.setText("<html><div class=\"about-section\">\n" +
+				"<h1 style=\"\"font-size:60px\"\",text-align:center\"><font color=#FFFFFF>About Us Page</font></h1>\n" +
+				"<p>\n\n\n\n\n\n</p>" +
+				" <h2><font color=#FFFFFF>Welcome to the Clinical Data Platform!\n</font></h2>" + "\n" +
+				"<p><font color=#FFFFFF>This application contains two pages to help automate your important workflows.</font></p>\n" +
+				"<p>\n\n\n\n\n\n\n\n</p>" +
+				"</div>" +
+				"<p>\n\n\n\n\n\n\n\n\n\n\n\n\n</p>" +
+				"<h2 style=\"text-align:center\"><font color=#FFFFFF>Our Team</font></h2>\n" +
+				"        <h2><font color=#FFFFFF>Kristen Klimisch</font></h2>\n" +
+				"        <p class=\"title\"><font color=#FFFFFF>Lead Software Engineer</font></p>\n" +
+				"        <p><font color=#FFFFFF>Kristen led and designed the customer data relationships.</font></p>\n" +
+				"        <p><font color=#FFFFFF>kklimisch@seattleu.edu</font></p>" +
+				"<p>\n\n\n\n\n\n</p>" +
+				"        <h2><font color=#FFFFFF>Ying-Chu (Troy) Chen</font></h2>\n" +
+				"        <p class=\"title\"><font color=#FFFFFF>Software Engineer</font></p>\n" +
+				"        <p><font color=#FFFFFF>Troy designed and led the implementation of the database architecture.</font></p>\n" +
+				"        <p><font color=#FFFFFF>cheny30@seattleu.edu</font></p>" +
+				"<p>\n\n\n\n\n\n</p>" +
+				"        <h2><font color=#FFFFFF>Antonio Santana</font></h2>\n" +
+				"        <p class=\"title\"><font color=#FFFFFF>Software Engineer</font></p>\n" +
+				"        <p><font color=#FFFFFF>Antonio led the application development.</font></p>\n" +
+				"        <p><font color=#FFFFFF>asantana1@seattleu.edu</font></p>" +
+				"</div>" +
+				"</html>");
 		panelAbout.add(lbImageAbout);
 	}
 
@@ -785,6 +850,7 @@ public class ClincalDataFrontEnd extends JFrame {
 
 		executeSkillQuery(0, parameters);
 		btnTop5Skills.setEnabled(true);
+		btnEquipmentInventory.setEnabled(true);
 		btnExpertSkills.setEnabled(true);
 		textFieldEntry1.setVisible(true);
 	}
@@ -806,18 +872,20 @@ public class ClincalDataFrontEnd extends JFrame {
 			bOK = queryrunner.Connect(host, user, pwd, db);
 			if (bOK == true) {
 				btnDBConnect.setLabel("Disconnect");
+				btnDBConnect.setBounds(56, 184, 143, 35);
 				panelWelcome.setVisible(false);
 				lblPassword.setVisible(false);
 				lblUserName.setVisible(false);
 				userName.setVisible(false);
 				passWord.setVisible(false);
 				lblWelcome.setText("Welcome " + user);
+				lblWelcome.setBounds(56, 134, 143, 35);
 				panelLogin.add(lbLogo);
 				btnCheckProjects.setVisible(true);
-				btnCheckSkills.setVisible(true);
+				btnPriorityWorkflows.setVisible(true);
 				btnAbout.setVisible(true);
 
-				btnTop5Skills.setEnabled(true);
+				btnEquipmentInventory.setEnabled(true);
 				btnExpertSkills.setEnabled(true);
 				btnIncompletetasks.setEnabled(true);
 				btnInserttask.setEnabled(true);
@@ -839,7 +907,7 @@ public class ClincalDataFrontEnd extends JFrame {
 				passWord.setVisible(true);
 				passWord.setText("");
 
-				btnTop5Skills.setEnabled(false);
+				btnEquipmentInventory.setEnabled(false);
 				btnExpertSkills.setEnabled(false);
 				btnIncompletetasks.setEnabled(false);
 				btnInserttask.setEnabled(false);
@@ -851,7 +919,7 @@ public class ClincalDataFrontEnd extends JFrame {
 				txtEnterDeliver.setVisible(false);
 				txtEnterEmployeeid.setVisible(false);
 				btnCheckProjects.setVisible(false);
-				btnCheckSkills.setVisible(false);
+				btnPriorityWorkflows.setVisible(false);
 				btnAbout.setVisible(false);
 			}
 		}
@@ -909,6 +977,7 @@ public class ClincalDataFrontEnd extends JFrame {
 	private JButton btnDBConnect;
 	private JButton btnExpertSkills;
 	private JButton btnTop5Skills;
+	private JButton btnEquipmentInventory;
 	private DefaultListModel<String> skillListModel;
 	private JTable skillsTable;
 	private DefaultTableModel model;
@@ -922,7 +991,7 @@ public class ClincalDataFrontEnd extends JFrame {
 
 	// Login panel button options
 	private JButton btnCheckProjects;
-	private JButton btnCheckSkills;
+	private JButton btnPriorityWorkflows;
 	private JButton btnAbout;
 	private JButton[] btnNavigation;
 
