@@ -21,27 +21,46 @@ public class QueryRunner {
 	 * Experts Query Shows employee names and the number of years of experience by
 	 * skill for those employees with over one year of experience in that skill.
 	 */
-	private void expertsQuery() {
-		// queryArray[0]
-		queryArray
-				.add(new QueryData("SELECT * FROM Employees_OverOneYearofExprience_bySkill", null, null, false, false));
+	private void expertsQuery()
+	{
+		queryArray.add(new QueryData("SELECT * FROM technician", null, null, false, false));
 		// queryArray[1]
-		queryArray
-				.add(new QueryData("SELECT * FROM Employees_OverOneYearofExprience_bySkill " + "WHERE employee LIKE ?",
-						new String[] { "Employee Name" }, new boolean[] { true }, false, true));
-		// queryArray[2]
-		queryArray.add(
-				new QueryData("SELECT * FROM Employees_OverOneYearofExprience_bySkill WHERE " + "skill_name LIKE ?",
-						new String[] { "Skill Name" }, new boolean[] { true }, false, true));
+//		queryArray
+//				.add(new QueryData("SELECT * FROM technician " + "WHERE technician_id = ?",
+//						new String[] { "technician_id" }, new boolean[] { true }, false, true));
+//		// queryArray[2]
+//		queryArray.add(
+//				new QueryData("SELECT * FROM Employees_OverOneYearofExprience_bySkill WHERE " + "skill_name LIKE ?",
+//						new String[] { "Skill Name" }, new boolean[] { true }, false, true));
 	}
 
 	/**
 	 * Top 5 Skills Query Shows the top five skills owned by employees in descending
 	 * order based on the number of employees related to each skill.
 	 */
-	private void top5SkillsQuery() {
-		// queryArray[3]
-		queryArray.add(new QueryData("SELECT * FROM Employees_TopFiveSkills", null, null, false, false));
+	private void executeClinicalTestQuery()
+	{
+		/* 4. Verify that technician was competent on a test. */
+		queryArray.add(new QueryData(
+				"select c.clinical_test_id, competency_id, t.technician_id, technician_last_name,\n" +
+						"technician_has_competency_date\n" +
+						"from technician t join technician_has_competency h on t.technician_id = h.technician_id\n" +
+						"join clinical_test c on c.technician_id = t.technician_id;",
+				null, null, false,false));
+	}
+
+	/**
+	 * The Equipment Inventory Query Shows all the equipment in descending
+	 * order based on the number of employees related to each skill.
+	 */
+	private void executeInventoryQuery()
+	{
+//		queryArray.add(new QueryData("SELECT * FROM equipment", null, null, false, false));
+		queryArray.add(new QueryData(
+				"select m.material_id, material_description, material_manufacturer,\n" +
+						"sum(clinical_tests_uses_materials_quantity_used) as \"total quantity used\" from\n" +
+						"materials m join clinical_test_uses_materials c on m.material_id = c.material_id\n" +
+						"group by m.material_id;", null, null, false, false));
 	}
 
 	/**
@@ -120,7 +139,8 @@ public class QueryRunner {
 		queryArray = new ArrayList<>();
 		error = "";
 		expertsQuery();
-		top5SkillsQuery();
+		executeClinicalTestQuery();
+		executeInventoryQuery();
 		recentSkillUpdatesebyPMQuery();
 		IncompleteTasksQuery();
 		EmployeeTasksQuery();
